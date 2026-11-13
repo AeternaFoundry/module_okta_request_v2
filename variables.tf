@@ -36,5 +36,13 @@ EOT
       })))
     })))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.request_v2s : (
+        v.requested_for == null || alltrue([for item in v.requested_for : (contains(["OKTA_USER"], item.type))])
+      )
+    ])
+    error_message = "must be one of: \"OKTA_USER\""
+  }
 }
 
